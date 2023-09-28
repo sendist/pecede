@@ -5,9 +5,10 @@ interface Props {
   setLebarP: (lebar: number) => void;
   setTinggiP: (lebar: number) => void;
   setRandom: (random: boolean) => void;
+  setShowCrop: (show: boolean) => void;
 }
 
-const Crop = ({ onFileChange, setLebarP, setTinggiP, setRandom}: Props) => {
+const Crop = ({ onFileChange, setLebarP, setTinggiP, setRandom, setShowCrop}: Props) => {
   const [lebar, setlebar] = useState<number>(0);
   const [tinggi, settinggi] = useState<number>(0);
 
@@ -27,6 +28,10 @@ const Crop = ({ onFileChange, setLebarP, setTinggiP, setRandom}: Props) => {
     } else {
       console.error("Image modification failed");
     }
+    setLebarP(lebar)
+    setTinggiP(tinggi)
+    setShowCrop(false);
+    setShowCrop(true);
   };
 
   return (
@@ -40,7 +45,7 @@ const Crop = ({ onFileChange, setLebarP, setTinggiP, setRandom}: Props) => {
         name="lebar"
         placeholder="0"
         value={lebar}
-        onChange={(e) => {setlebar(parseInt(e.target.value)); setLebarP(parseInt(e.target.value))}}
+        onChange={(e) => {setlebar(parseInt(e.target.value))}}
       />
       <div></div>
       <label htmlFor="tinggi">Tinggi</label>
@@ -51,12 +56,12 @@ const Crop = ({ onFileChange, setLebarP, setTinggiP, setRandom}: Props) => {
         name="tinggi"
         placeholder="0"
         value={tinggi}
-        onChange={(e) => {settinggi(parseInt(e.target.value)); setTinggiP(parseInt(e.target.value))}}
+        onChange={(e) => {settinggi(parseInt(e.target.value))}}
       />
       <div className="grid grid-cols-2 justify-items-center gap-y-2">
       <button
         className="w-32 h-16 border mt-4 bg-slate-900 text-white px-2 py-1"
-        onClick={() => {handleClick(), setRandom(false)}}
+        onClick={() => {handleClick(); setRandom(false)}}
       >
         Crop
       </button>

@@ -25,8 +25,8 @@ const CropContainer = ({ lebar, tinggi, random }: Props) => {
   }
 
   let images = [];
-  for (let i = 0; i < lebar; i++) {
-    for (let j = 0; j < tinggi; j++) {
+  for (let i = 0; i < tinggi; i++) {
+    for (let j = 0; j < lebar; j++) {
       images.push(`../static/img/crop/crop_${i}_${j}.jpg`);
     }
   }
@@ -41,7 +41,7 @@ const CropContainer = ({ lebar, tinggi, random }: Props) => {
     >
       {images.map((image, index) => (
         <div key={index} className="bg-gray-200 p-[1px]">
-          <img src={image} alt={`Image ${index}`} className="object-cover" />
+          <img src={`${image}?${Date.now()}`} alt={`Image ${index}`} className="object-cover" />
         </div>
       ))}
     </div>

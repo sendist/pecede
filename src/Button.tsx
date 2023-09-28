@@ -2,10 +2,12 @@ interface Props {
   name: string;
   method: string;
   onFileChange: (filePath: string) => void;
+  setDefaultDisplay: () => void;
 }
 
-const Button = ({ name, method, onFileChange }: Props) => {
+const Button = ({ name, method, onFileChange, setDefaultDisplay}: Props) => {
   const handleClick = async () => {
+    setDefaultDisplay();
     const response = await fetch(`http://127.0.0.1:5000/${method}`, {
       method: "POST",
     });

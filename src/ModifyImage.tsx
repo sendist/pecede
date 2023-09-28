@@ -8,7 +8,7 @@ import Crop from "./Crop";
 import CropContainer from "./CropContainer";
 import { useRef } from "react";
 import ButtonState from "./ButtonState";
-import ShowRGB from "./ShowRGB"
+import ShowRGB from "./ShowRGB";
 import ButtonWithInput from "./ButtonWithInput";
 
 const ModifyImage = () => {
@@ -37,19 +37,40 @@ const ModifyImage = () => {
     setShowHistogram(true);
   };
 
-  const handleImage = () => {
-    if (showCrop) {
-      return "sdfadfad";
+  const setDefaultDisplay = () => {
+    setShowHistogram(false);
+    setShowRGB(false);
+    setShowCrop(false);
+  };
+
+  const getImage = () => {
+    if (uploadedImage) {
+      if (showCrop) {
+        return <CropContainer lebar={lebar} tinggi={tinggi} random={random} />;
+      } else {
+        return (
+          <>
+            <img
+              ref={imgRef}
+              className="min-h-[40vh] min-w-[27vw] max-h-[40vh] max-w-[27vw] object-contain justify-self-end"
+              src={filePath ? filePath : "../static/img/img_now.jpg"}
+              alt=""
+            />
+            <p>
+              Ukuran:{" "}
+              {imgRef.current?.offsetHeight +
+                " x " +
+                imgRef.current?.offsetWidth}{" "}
+              px
+            </p>
+          </>
+        );
+      }
     } else {
-      return (
-        <img
-          className="max-h-[75vh] max-w-[75vh] justify-self-end"
-          src={filePath ? filePath : "../static/img/img_now.jpg"}
-          alt=""
-        />
-      );
+      return <FileUpload onUpload={handleUpload} />;
     }
   };
+
   return (
     <section className="flex flex-row justify-start gap-x-4 w-full">
       <div className="flex flex-col gap-y-2 w-[21vw] h-[87vh] pr-4 overflow-auto shrink-0">
@@ -60,21 +81,25 @@ const ModifyImage = () => {
               name="Normal"
               method="normal"
               onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
             />
             <Button
               name="Grayscale"
               method="grayscale"
               onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
             />
             <Button
               name="Zoom In"
               method="zoomin"
               onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
             />
             <Button
               name="Zoom Out"
               method="zoomout"
               onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
             />
           </div>
         </section>
@@ -85,21 +110,25 @@ const ModifyImage = () => {
               name="Geser Kiri"
               method="move_left"
               onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
             />
             <Button
               name="Geser Kanan"
               method="move_right"
               onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
             />
             <Button
               name="Geser Atas"
               method="move_up"
               onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
             />
             <Button
               name="Geser Bawah"
               method="move_down"
               onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
             />
           </div>
         </section>
@@ -110,21 +139,25 @@ const ModifyImage = () => {
               name="Terang (*)"
               method="brightness_multiplication"
               onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
             />
             <Button
               name="Gelap (/)"
               method="brightness_division"
               onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
             />
             <Button
               name="Terang (+)"
               method="brightness_addition"
               onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
             />
             <Button
               name="Gelap (-)"
               method="brightness_substraction"
               onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
             />
           </div>
         </section>
@@ -136,11 +169,12 @@ const ModifyImage = () => {
         <section className="border-2 border-black p-4">
           <h1 className="font-bold text-xl mb-4">Pemrosesan Gambar</h1>
           <div className="grid grid-cols-2 justify-items-center gap-y-2">
-          <Button
-            name="Histogram Equalizer"
-            method="/histogram_equalizer"
-            onFileChange={handleFileChange}
-          />
+            <Button
+              name="Histogram Equalizer"
+              method="/histogram_equalizer"
+              onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
+            />
           </div>
         </section>
         <section className="border-2 border-black p-4">
@@ -150,12 +184,19 @@ const ModifyImage = () => {
               name="Edge Detection"
               method="/edge_detection"
               onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
             />
-            <Button name="Blur" method="blur" onFileChange={handleFileChange} />
+            <Button
+              name="Blur"
+              method="blur"
+              onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
+            />
             <Button
               name="Sharpening"
               method="sharpening"
               onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
             />
           </div>
         </section>
@@ -168,12 +209,13 @@ const ModifyImage = () => {
             setLebarP={setLebarP}
             setTinggiP={setTinggiP}
             setRandom={setRandom}
+            setShowCrop={setShowCrop}
           />
         </section>
         <section className="border-2 border-black p-4">
           <h1 className="font-bold text-xl mb-4">RGB</h1>
           <div className="grid grid-cols-2 justify-items-center gap-y-2">
-          <ButtonState name="Show RGB" onclick={setShowRGB} />
+            <ButtonState name="Show RGB" onclick={setShowRGB} />
           </div>
         </section>
 
@@ -181,48 +223,71 @@ const ModifyImage = () => {
         <section className="border-2 border-black p-4">
           <h1 className="font-bold text-xl mb-4">Filter</h1>
           <div className="grid grid-cols-2 justify-items-center gap-y-2">
-          <Button name="Identity" method="identity" onFileChange={handleFileChange} />
-          <Button name="Blur" method="blur" onFileChange={handleFileChange} />
-          <ButtonWithInput name="CV Blur" method="cv-blur" onFileChange={handleFileChange} />
-          <ButtonWithInput name="Gaussian Blur" method="gaussian-blur" onFileChange={handleFileChange} />
-          <ButtonWithInput name="Median Blur" method="median-blur" onFileChange={handleFileChange} />
-          <Button name="Sharpen" method="sharpen" onFileChange={handleFileChange} />
-          <Button name="Bilateral" method="bilateral" onFileChange={handleFileChange} />
-          <Button name="Zero Padding" method="zero-padding" onFileChange={handleFileChange} />
-          <Button name="Lowpass Filter" method="lowpass" onFileChange={handleFileChange} />
-          <Button name="Bandpass Filter" method="bandpass" onFileChange={handleFileChange} />
+            <Button
+              name="Identity"
+              method="identity"
+              onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
+            />
+            <Button
+              name="Blur"
+              method="blur"
+              onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
+            />
+            <ButtonWithInput
+              name="CV Blur"
+              method="cv-blur"
+              onFileChange={handleFileChange}
+            />
+            <ButtonWithInput
+              name="Gaussian Blur"
+              method="gaussian-blur"
+              onFileChange={handleFileChange}
+            />
+            <ButtonWithInput
+              name="Median Blur"
+              method="median-blur"
+              onFileChange={handleFileChange}
+            />
+            <Button
+              name="Sharpen"
+              method="sharpen"
+              onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
+            />
+            <Button
+              name="Bilateral"
+              method="bilateral"
+              onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
+            />
+            <Button
+              name="Zero Padding"
+              method="zero-padding"
+              onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
+            />
+            <Button
+              name="Lowpass Filter"
+              method="lowpass"
+              onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
+            />
+            <Button
+              name="Bandpass Filter"
+              method="bandpass"
+              onFileChange={handleFileChange}
+              setDefaultDisplay={setDefaultDisplay}
+            />
           </div>
-
         </section>
       </div>
 
       <div className="w-full h-[87vh] flex flex-col justify-center items-start border-2 border-black">
-        <div className="self-center">
-          {uploadedImage ? (
-            <>
-              <img
-                ref={imgRef}
-                className="max-h-[75vh] max-w-[75vh] justify-self-end"
-                src={filePath ? filePath : "../static/img/img_now.jpg"}
-                alt=""
-              />
-              <p>
-                Ukuran:{" "}
-                {imgRef.current?.offsetHeight +
-                  " x " +
-                  imgRef.current?.offsetWidth}{" "}
-                px
-              </p>
-            </>
-          ) : (
-            <FileUpload onUpload={handleUpload} />
-          )}
-        </div>
+        <div className="self-center">{getImage()}</div>
 
         <div className="container flex justify-center mt-4">
-          <div className="w-[20vw] h-[20vh]">
-            <CropContainer lebar={lebar} tinggi={tinggi} random={random} />
-          </div>
           {showHistogram && <Histogram filePaths={filePaths} />}
         </div>
       </div>
