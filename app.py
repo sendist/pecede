@@ -7,6 +7,7 @@ from datetime import datetime
 from functools import wraps, update_wrapper
 from shutil import copyfile
 from flask_cors import CORS
+import shutil
 
 app = Flask(__name__)
 CORS(app)
@@ -25,6 +26,9 @@ def nocache(view):
         return response
     return update_wrapper(no_cache, view)
 
+def delete_folder(path) :
+    if os.path.exists(path):
+        shutil.rmtree(path)
 
 @app.route("/index")
 @app.route("/")
@@ -51,27 +55,10 @@ def add_header(r):
     r.headers['Cache-Control'] = 'public, max-age=0'
     return r
 
-
-# @app.route("/upload", methods=["POST"])
-# @nocache
-
-# def upload():
-#     target = os.path.join(APP_ROOT, "static/img")
-#     if not os.path.isdir(target):
-#         if os.name == 'nt':
-#             os.makedirs(target)
-#         else:
-#             os.mkdir(target)
-#     for file in request.files.getlist("file"):
-#         file.save("static/img/img_now.jpg")
-#     copyfile("static/img/img_now.jpg", "static/img/img_normal.jpg")
-#     return render_template("uploaded.html", file_path="img/img_now.jpg")
-
-
-
 @app.route("/upload", methods=["POST"])
 @nocache
 def upload():
+    delete_folder('./static/img')
     target = os.path.join(APP_ROOT, "static/img")
     if not os.path.isdir(target):
         if os.name == 'nt':
@@ -84,13 +71,11 @@ def upload():
     print(file)
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
 
-
 @app.route("/normal", methods=["POST"])
 @nocache
 def normal():
     copyfile("static/img/img_normal.jpg", "static/img/img_now.jpg")
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
-
 
 @app.route("/grayscale", methods=["POST"])
 @nocache
@@ -99,13 +84,11 @@ def grayscale():
     image_processing.grayscale()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
 
-
 @app.route("/zoomin", methods=["POST"])
 @nocache
 def zoomin():
     image_processing.zoomin()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
-
 
 @app.route("/zoomout", methods=["POST"])
 @nocache
@@ -113,13 +96,11 @@ def zoomout():
     image_processing.zoomout()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
 
-
 @app.route("/move_left", methods=["POST"])
 @nocache
 def move_left():
     image_processing.move_left()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
-
 
 @app.route("/move_right", methods=["POST"])
 @nocache
@@ -127,13 +108,11 @@ def move_right():
     image_processing.move_right()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
 
-
 @app.route("/move_up", methods=["POST"])
 @nocache
 def move_up():
     image_processing.move_up()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
-
 
 @app.route("/move_down", methods=["POST"])
 @nocache
@@ -141,13 +120,11 @@ def move_down():
     image_processing.move_down()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
 
-
 @app.route("/brightness_addition", methods=["POST"])
 @nocache
 def brightness_addition():
     image_processing.brightness_addition()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
-
 
 @app.route("/brightness_substraction", methods=["POST"])
 @nocache
@@ -155,13 +132,11 @@ def brightness_substraction():
     image_processing.brightness_substraction()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
 
-
 @app.route("/brightness_multiplication", methods=["POST"])
 @nocache
 def brightness_multiplication():
     image_processing.brightness_multiplication()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
-
 
 @app.route("/brightness_division", methods=["POST"])
 @nocache
@@ -169,13 +144,11 @@ def brightness_division():
     image_processing.brightness_division()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
 
-
 @app.route("/histogram_equalizer", methods=["POST"])
 @nocache
 def histogram_equalizer():
     image_processing.histogram_equalizer()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
-
 
 @app.route("/edge_detection", methods=["POST"])
 @nocache
@@ -183,20 +156,17 @@ def edge_detection():
     image_processing.edge_detection()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
 
-
 @app.route("/blur", methods=["POST"])
 @nocache
 def blur():
     image_processing.blur()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
 
-
 @app.route("/sharpening", methods=["POST"])
 @nocache
 def sharpening():
     image_processing.sharpening()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
-
 
 @app.route("/histogram_rgb", methods=["POST"])
 @nocache
@@ -221,11 +191,18 @@ def thresholding():
 @app.route("/crop", methods=["POST"])
 @nocache
 def crop():
+    delete_folder('./static/img/crop')
+    target = os.path.join(APP_ROOT, "static/img/crop")
+    if not os.path.isdir(target):
+        if os.name == 'nt':
+            os.makedirs(target)
+        else:
+            os.mkdir(target)
     data = request.get_json()
     lebar = int(data['lebar'])
     tinggi = int(data['tinggi'])
     image_processing.cropImage(lebar, tinggi)
-    return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg'})
+    return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/crop_0_0.jpg'})
 
 @app.route("/showRGB", methods=["POST"])
 @nocache
@@ -235,7 +212,6 @@ def showRGB():
     g_list = g.tolist()
     b_list = b.tolist()
     return jsonify({'message' : 'File successfully uploaded', 'filePath' : '../static/img/img_now.jpg', 'r': r_list, 'g': g_list, 'b': b_list})
-
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0")

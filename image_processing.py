@@ -400,8 +400,8 @@ def cropImage(width, height):
     crop_height = img_height // height
 
     # Crop the image into a grid of width x height images
-    for i in range(width):
-        for j in range(height):
+    for j in range(width):
+        for i in range(height):
             # Calculate the coordinates for cropping
             left = j * crop_width
             upper = i * crop_height
