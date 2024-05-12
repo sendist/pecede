@@ -1,15 +1,18 @@
 interface Props {
-  name: string;
-  method: string;
+  kernel : string[][];
   onFileChange: (filePath: string[]) => void;
   setDefaultDisplay: () => void;
 }
 
-const Button = ({ name, method, onFileChange, setDefaultDisplay}: Props) => {
+const ButtonCustomFilter = ({ kernel, onFileChange, setDefaultDisplay}: Props) => {
   const handleClick = async () => {
     setDefaultDisplay();
-    const response = await fetch(`http://127.0.0.1:5000/${method}`, {
+    const response = await fetch(`http://127.0.0.1:5000/custom-filter`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ kernel }),
     });
     if (response.ok) {
       const data = await response.json();
@@ -21,12 +24,12 @@ const Button = ({ name, method, onFileChange, setDefaultDisplay}: Props) => {
 
   return (
     <button
-      className="w-[90%] h-16 border bg-slate-900 text-white px-2 py-1"
+      className="w-full h-16 border bg-slate-900 text-white px-2 py-1 mt-4"
       onClick={handleClick}
     >
-      {name}
+      Filter
     </button>
   );
 };
 
-export default Button;
+export default ButtonCustomFilter;

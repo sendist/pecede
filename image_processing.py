@@ -6,10 +6,12 @@ import math
 from collections import Counter
 from pylab import savefig
 import cv2
+from shutil import copyfile
 
 
 def grayscale():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img_arr = np.asarray(img)
     r = img_arr[:, :, 0]
     g = img_arr[:, :, 1]
@@ -17,7 +19,7 @@ def grayscale():
     new_arr = r.astype(int) + g.astype(int) + b.astype(int)
     new_arr = (new_arr/3).astype('uint8')
     new_img = Image.fromarray(new_arr)
-    new_img.save("static/img/img_now.jpg")
+    new_img.save("static/img/img_after.jpg")
 
 
 def is_grey_scale(img_path):
@@ -32,7 +34,8 @@ def is_grey_scale(img_path):
 
 
 def zoomin():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img = img.convert("RGB")
     img_arr = np.asarray(img)
     new_size = ((img_arr.shape[0] * 2),
@@ -71,11 +74,12 @@ def zoomin():
 
     new_arr = new_arr.astype('uint8')
     new_img = Image.fromarray(new_arr)
-    new_img.save("static/img/img_now.jpg")
+    new_img.save("static/img/img_after.jpg")
 
 
 def zoomout():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img = img.convert("RGB")
     x, y = img.size
     new_arr = Image.new("RGB", (int(x / 2), int(y / 2)))
@@ -93,11 +97,12 @@ def zoomout():
                 (g[0] + g[1] + g[2] + g[3]) / 4), int((b[0] + b[1] + b[2] + b[3]) / 4)))
     new_arr = np.uint8(new_arr)
     new_img = Image.fromarray(new_arr)
-    new_img.save("static/img/img_now.jpg")
+    new_img.save("static/img/img_after.jpg")
 
 
 def move_left():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img_arr = np.asarray(img)
     r, g, b = img_arr[:, :, 0], img_arr[:, :, 1], img_arr[:, :, 2]
     r = np.pad(r, ((0, 0), (0, 50)), 'constant')[:, 50:]
@@ -105,11 +110,12 @@ def move_left():
     b = np.pad(b, ((0, 0), (0, 50)), 'constant')[:, 50:]
     new_arr = np.dstack((r, g, b))
     new_img = Image.fromarray(new_arr)
-    new_img.save("static/img/img_now.jpg")
+    new_img.save("static/img/img_after.jpg")
 
 
 def move_right():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img_arr = np.asarray(img)
     r, g, b = img_arr[:, :, 0], img_arr[:, :, 1], img_arr[:, :, 2]
     r = np.pad(r, ((0, 0), (50, 0)), 'constant')[:, :-50]
@@ -117,11 +123,12 @@ def move_right():
     b = np.pad(b, ((0, 0), (50, 0)), 'constant')[:, :-50]
     new_arr = np.dstack((r, g, b))
     new_img = Image.fromarray(new_arr)
-    new_img.save("static/img/img_now.jpg")
+    new_img.save("static/img/img_after.jpg")
 
 
 def move_up():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img_arr = np.asarray(img)
     r, g, b = img_arr[:, :, 0], img_arr[:, :, 1], img_arr[:, :, 2]
     r = np.pad(r, ((0, 50), (0, 0)), 'constant')[50:, :]
@@ -129,11 +136,12 @@ def move_up():
     b = np.pad(b, ((0, 50), (0, 0)), 'constant')[50:, :]
     new_arr = np.dstack((r, g, b))
     new_img = Image.fromarray(new_arr)
-    new_img.save("static/img/img_now.jpg")
+    new_img.save("static/img/img_after.jpg")
 
 
 def move_down():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img_arr = np.asarray(img)
     r, g, b = img_arr[:, :, 0], img_arr[:, :, 1], img_arr[:, :, 2]
     r = np.pad(r, ((50, 0), (0, 0)), 'constant')[0:-50, :]
@@ -141,47 +149,78 @@ def move_down():
     b = np.pad(b, ((50, 0), (0, 0)), 'constant')[0:-50, :]
     new_arr = np.dstack((r, g, b))
     new_img = Image.fromarray(new_arr)
-    new_img.save("static/img/img_now.jpg")
+    new_img.save("static/img/img_after.jpg")
 
 
 def brightness_addition():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img_arr = np.asarray(img).astype(np.uint16)
-    img_arr = img_arr+100
+    img_arr = img_arr+200
     img_arr = np.clip(img_arr, 0, 255)
     new_arr = img_arr.astype('uint8')
     new_img = Image.fromarray(new_arr)
-    new_img.save("static/img/img_now.jpg")
+    new_img.save("static/img/img_after.jpg")
 
 
 def brightness_substraction():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img_arr = np.asarray(img).astype(np.int16)
-    img_arr = img_arr-100
+    img_arr = img_arr-200
     img_arr = np.clip(img_arr, 0, 255)
     new_arr = img_arr.astype('uint8')
     new_img = Image.fromarray(new_arr)
-    new_img.save("static/img/img_now.jpg")
+    new_img.save("static/img/img_after.jpg")
 
+def brightness_addition_substraction(brightnessValue):
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    copyfile("static/img/img_after.jpg", "static/img/img_brightnessMod.jpg")
+    img = Image.open("static/img/img_brightnessMod.jpg").convert("RGB")
+    img_arr = np.asarray(img).astype(np.int16)
+    img_arr = img_arr+(brightnessValue*10)
+    img_arr = np.clip(img_arr, 0, 255)
+    new_arr = img_arr.astype('uint8')
+    new_img = Image.fromarray(new_arr)
+    new_img.save("static/img/img_brightnessMod.jpg")
 
 def brightness_multiplication():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img_arr = np.asarray(img)
     img_arr = img_arr*1.25
     img_arr = np.clip(img_arr, 0, 255)
     new_arr = img_arr.astype('uint8')
     new_img = Image.fromarray(new_arr)
-    new_img.save("static/img/img_now.jpg")
+    new_img.save("static/img/img_after.jpg")
 
 
 def brightness_division():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img_arr = np.asarray(img)
     img_arr = img_arr/1.25
     img_arr = np.clip(img_arr, 0, 255)
     new_arr = img_arr.astype('uint8')
     new_img = Image.fromarray(new_arr)
-    new_img.save("static/img/img_now.jpg")
+    new_img.save("static/img/img_after.jpg")
+
+def brightness_multiplication_division(brightnessValue):
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    copyfile("static/img/img_after.jpg", "static/img/img_brightnessMod.jpg")
+    img = Image.open("static/img/img_brightnessMod.jpg").convert("RGB")
+    img_arr = np.asarray(img)
+    brightnessValue = brightnessValue/2
+    if brightnessValue > 0 :
+        brightnessValue += 1
+        img_arr = img_arr*brightnessValue
+    elif brightnessValue < 0 :
+        brightnessValue -= 1
+        img_arr = img_arr/(-1*brightnessValue)
+    img_arr = np.clip(img_arr, 0, 255)
+    new_arr = img_arr.astype('uint8')
+    new_img = Image.fromarray(new_arr)
+    new_img.save("static/img/img_brightnessMod.jpg")
 
 
 def convolution(img, kernel):
@@ -211,38 +250,41 @@ def convolution(img, kernel):
 
 
 def edge_detection():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img_arr = np.asarray(img, dtype=int)
     kernel = np.array([[-1, -1, -1], [-1, 8, -1], [-1, -1, -1]])
     new_arr = convolution(img_arr, kernel)
     new_img = Image.fromarray(new_arr)
-    new_img.save("static/img/img_now.jpg")
+    new_img.save("static/img/img_after.jpg")
 
 
 def blur():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img_arr = np.asarray(img, dtype=int)
     kernel = np.array(
         [[0.0625, 0.125, 0.0625], [0.125, 0.25, 0.125], [0.0625, 0.125, 0.0625]])
     new_arr = convolution(img_arr, kernel)
     new_img = Image.fromarray(new_arr)
-    new_img.save("static/img/img_now.jpg")
+    new_img.save("static/img/img_after.jpg")
 
 
 def sharpening():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img_arr = np.asarray(img, dtype=int)
     kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
     new_arr = convolution(img_arr, kernel)
     new_img = Image.fromarray(new_arr)
-    new_img.save("static/img/img_now.jpg")
+    new_img.save("static/img/img_after.jpg")
 
 def histogram_rgb():
-    img_path = "static/img/img_now.jpg"
+    img_path = "static/img/img_after.jpg"
     img = Image.open(img_path)
     img_arr = np.asarray(img)
 
-    if len(img_arr.shape) == 2:
+    if len(img_arr.shape) == 2 or is_grey_scale(img_path):
         # Grayscale image
         data_g = Counter(img_arr.flatten())
         matplotlib.use('Agg')
@@ -250,7 +292,6 @@ def histogram_rgb():
         plt.savefig(f'static/img/grey_histogram.jpg', dpi=300)
         plt.clf()
     elif len(img_arr.shape) == 3 and img_arr.shape[2] == 3:
-        # Color image (assuming it's RGB)
         r = img_arr[:, :, 0].flatten()
         g = img_arr[:, :, 1].flatten()
         b = img_arr[:, :, 2].flatten()
@@ -268,72 +309,7 @@ def histogram_rgb():
             plt.savefig(f'static/img/{data[0]}_histogram.jpg', dpi=300)
             plt.clf()
     else:
-#         Handle other cases or raise an error if the image format is not supported
         raise ValueError("Unsupported image format")
-
-
-def histogram_rgb2():
-    img_path = "static/img/img_now.jpg"
-    img = cv2.imread(img_path).convert("RGB")
-    if is_grey_scale(img_path):
-        hist_gray = cv2.calcHist([img], [0], None, [256], [0, 256])
-        plt.plot(hist_gray,color = 'black')
-        plt.xlim([0, 256])
-        matplotlib.use('Agg')
-        plt.savefig(f'static/img/grey_histogram.jpg', dpi=300)
-        plt.clf()
-    else:
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        b, g, r = cv2.split(img)
-
-        # Calculate the histogram of each channel
-        data_b = cv2.calcHist([b], [0], None, [256], [0, 256])
-        data_g = cv2.calcHist([g], [0], None, [256], [0, 256])
-        data_r = cv2.calcHist([r], [0], None, [256], [0, 256])
-        hist = cv2.calcHist([img], [0, 1, 2], None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
-        # Plot the histograms
-        # plt.plot(hist_b, color = 'blue')
-        # plt.plot(hist_g, color = 'green')
-        # plt.plot(hist_r, color = 'red')
-        # plt.xlim([0, 256])
-        # plt.savefig(f'static/img/{data[0]}_histogram.jpg', dpi=300)
-        # plt.clf()
-
-        # data_rgb = [hist_r, hist_g, hist_b]
-        data_rgb = [data_r, data_g, data_b]
-        warna = ['red', 'green', 'blue']
-        data_hist = list(zip(warna, data_rgb))
-        for data in data_hist:
-            plt.plot(data[1], color = f'{data[0]}')
-            plt.savefig(f'static/img/{data[0]}_histogram.jpg', dpi=300)
-            plt.clf()
-
-def histogram_rgb2():
-    img_path = "static/img/img_now.jpg"
-    img = Image.open(img_path)
-    img_arr = np.array(img)
-    if is_grey_scale(img_path):
-        # g = img_arr[:, :, 0].flatten()
-        g = img_arr.flatten()
-        data_g = Counter(g)
-        plt.bar(list(data_g.keys()), data_g.values(), color='black')
-        plt.savefig(f'static/img/grey_histogram.jpg', dpi=300)
-        plt.clf()
-    else:
-        r = img_arr[:, :, 0].flatten()
-        g = img_arr[:, :, 1].flatten()
-        b = img_arr[:, :, 2].flatten()
-        data_r = Counter(r)
-        data_g = Counter(g)
-        data_b = Counter(b)
-        data_rgb = [data_r, data_g, data_b]
-        warna = ['red', 'green', 'blue']
-        data_hist = list(zip(warna, data_rgb))
-        for data in data_hist:
-            plt.bar(list(data[1].keys()), data[1].values(), color=f'{data[0]}')
-            plt.savefig(f'static/img/{data[0]}_histogram.jpg', dpi=300)
-            plt.clf()
-
 
 def df(img):  # to make a histogram (count distribution frequency)
     values = [0]*256
@@ -355,42 +331,27 @@ def cdf(hist):  # cumulative distribution frequency
 
 
 def histogram_equalizer():
-    img = cv2.imread('static\img\img_now.jpg', 0)
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = cv2.imread('static\img\img_after.jpg', 0)
     my_cdf = cdf(df(img))
     # use linear interpolation of cdf to find new pixel values. Scipy alternative exists
     image_equalized = np.interp(img, range(0, 256), my_cdf)
-    cv2.imwrite('static/img/img_now.jpg', image_equalized)
+    cv2.imwrite('static/img/img_after.jpg', image_equalized)
 
 def threshold(lower_thres, upper_thres):
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    copyfile("static/img/img_after.jpg", "static/img/img_before.jpg")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img_arr = np.array(img) 
     condition = np.logical_and(np.greater_equal(img_arr, lower_thres),
                                np.less_equal(img_arr, upper_thres))
     print(lower_thres, upper_thres)
     img_arr[condition] = 255
     new_img = Image.fromarray(img_arr)
-    new_img.save("static/img/img_now.jpg")
-
-def cropImage2(lebar, tinggi):
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
-    width, height = img.size
-    
-    incrementWidth = width/lebar
-    incrementHeight = height/tinggi
-
-    leftCrop = 0
-    rightCrop = width - (incrementWidth)
-    topCrop = height - (incrementHeight)
-    bottomCrop = 0
-
-    for i in range(lebar):
-        for j in range(tinggi):
-            img.crop((leftCrop, topCrop, rightCrop, bottomCrop))
-            img.save(f"static/img/crop/crop_{i}_{j}.jpg")
+    new_img.save("static/img/img_after.jpg")
 
 def cropImage(width, height):
     # Open the image
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
 
     # Get the dimensions of the original image
     img_width, img_height = img.size
@@ -416,7 +377,7 @@ def cropImage(width, height):
 
 
 def showRGB():
-    img = Image.open("static/img/img_now.jpg").convert("RGB")
+    img = Image.open("static/img/img_after.jpg").convert("RGB")
     img_arr = np.asarray(img)
     r = img_arr[:, :, 0]
     g = img_arr[:, :, 1]

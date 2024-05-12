@@ -1,14 +1,14 @@
 interface Props {
   name: string;
-  method: string;
   onFileChange: (filePath: string[]) => void;
   setDefaultDisplay: () => void;
+  setPlayMatching: (isPlay : boolean) => void;
 }
 
-const Button = ({ name, method, onFileChange, setDefaultDisplay}: Props) => {
+const ButtonMatchingCitra = ({ name, onFileChange, setDefaultDisplay, setPlayMatching}: Props) => {
   const handleClick = async () => {
     setDefaultDisplay();
-    const response = await fetch(`http://127.0.0.1:5000/${method}`, {
+    const response = await fetch(`http://127.0.0.1:5000/start-matching-citra`, {
       method: "POST",
     });
     if (response.ok) {
@@ -17,6 +17,7 @@ const Button = ({ name, method, onFileChange, setDefaultDisplay}: Props) => {
     } else {
       console.error("Image modification failed");
     }
+    setPlayMatching(true);
   };
 
   return (
@@ -29,4 +30,4 @@ const Button = ({ name, method, onFileChange, setDefaultDisplay}: Props) => {
   );
 };
 
-export default Button;
+export default ButtonMatchingCitra;
