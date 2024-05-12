@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 
 interface Props {
-  onUpload: (filePath: string) => void;
+  onUpload: (fileUpload: string, filePath: string[]) => void;
 }
 
 const FileUpload = ({onUpload} : Props) => {
@@ -27,7 +27,7 @@ const FileUpload = ({onUpload} : Props) => {
     if (response.ok) {
       const data = await response.json();
       console.log(data.filePath);
-      onUpload(data.filePath);
+      onUpload(data.filePath, [data.filePath]);
     } else {
       console.error("File upload failed");
     }

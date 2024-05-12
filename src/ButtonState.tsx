@@ -10,7 +10,7 @@ const ButtonState = ({ name, onclick}: Props) => {
 
   return (
     <button
-      className="w-32 h-16 border bg-slate-900 text-white px-2 py-1"
+      className="w-[90%] h-16 border bg-slate-900 text-white px-2 py-1"
       onClick={handleClick}
     >
       {name}

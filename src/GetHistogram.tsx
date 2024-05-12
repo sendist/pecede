@@ -20,7 +20,7 @@ const GetHistogram = ({onFileChange} : Props) => {
     <>
           <div className="grid grid-cols-2 justify-items-center gap-y-2">
     <button
-      className="w-32 h-16 border bg-slate-900 text-white px-2 py-1"
+      className="w-[90%] h-16 border bg-slate-900 text-white px-2 py-1"
       onClick={handleClick}
     >
     Histogram
